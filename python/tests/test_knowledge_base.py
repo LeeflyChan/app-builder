@@ -133,7 +133,7 @@ class TestKnowLedge(unittest.TestCase):
         knowledge.get_documents_list(
             knowledge_base_id=knowledge_base_id)
         list_res = knowledge.describe_documents(knowledge_base_id=knowledge_base_id)
-        document_id = list_res.data[-1].id
+        document_id = list_res.data[-1].documentId
         knowledge.describe_chunks(document_id, knowledgebase_id=knowledge_base_id, keyword="test")
         resp = knowledge.create_chunk(document_id, content="test", knowledgebase_id=knowledge_base_id)
         chunk_id = resp.id
@@ -191,6 +191,11 @@ class TestKnowLedge(unittest.TestCase):
         chunk_id = res.chunks[0].chunk_id
         self.assertIsNotNone(chunk_id)
 
+    def test_describe_documents(self):
+        knowledge = appbuilder.KnowledgeBase()
+        appbuilder.logger.setLoglevel("DEBUG")
+        documents = knowledge.describe_documents(knowledge_base_id="b1ddd469-c93d-496a-8e4f-51e02c2ca42f")
+        self.assertEqual(len(documents.data), 10)
 
 if __name__ == "__main__":
     unittest.main()

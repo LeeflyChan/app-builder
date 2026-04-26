@@ -209,4 +209,13 @@ public class KnowledgebaseTest {
                 request.getKnowledgebase_ids(), request.getMetadata_filters(), request.getPipeline_config());
         assertNotNull(response.getChunks().get(0).getChunk_id());
     }
+    @Test
+     public void testDescribeDocuments() throws IOException, AppBuilderServerException {
+        String knowledgeBaseID = "b1ddd469-c93d-496a-8e4f-51e02c2ca42f";
+        Knowledgebase knowledgebase = new Knowledgebase(System.getenv("APPBUILDER_TOKEN"));
+        // 获取文档列表
+        DocumentsDescribeRequest request = new DocumentsDescribeRequest(knowledgeBaseID, null, 10);
+        DocumentsDescribeResponse describeResponses = knowledgebase.describeDocuments(request);
+        assertNotNull(describeResponses.getData()[0].getId());
+     }
 }

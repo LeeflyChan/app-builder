@@ -1452,7 +1452,7 @@ func TestChunk(t *testing.T) {
 	}
 
 	log("Documents retrieved: %+v", documentsRes)
-	documentID := documentsRes.Data[0].ID
+	documentID := documentsRes.Data[0].DocumentId
 	// 创建切片
 	chunkID, err := client.CreateChunk(CreateChunkRequest{
 		KnowledgeBaseID: knowledgeBaseID,
@@ -1608,4 +1608,25 @@ func TestQueryKnowledgeBase(t *testing.T) {
 		// 测试通过，打印文件名和测试函数名
 		t.Logf("%s========== OK:  %s ==========%s", "\033[32m", t.Name(), "\033[0m")
 	}
+}
+
+func TestDescribeDocuments(t *testing.T) {
+	config, err := NewSDKConfig("", "")
+	if err != nil {
+		t.Logf("%s========== FAIL:  %s ==========%s", "\033[31m", t.Name(), "\033[0m")
+		t.Fatalf("new http client config failed: %v", err)
+	}
+	knowledgeBaseID := "b1ddd469-c93d-496a-8e4f-51e02c2ca42f"
+	client, err := NewKnowledgeBaseWithKnowledgeBaseID(knowledgeBaseID, config)
+	if err != nil {
+		t.Logf("%s========== FAIL:  %s ==========%s", "\033[31m", t.Name(), "\033[0m")
+		t.Fatalf("new Knowledge base instance failed")
+	}
+	documentsRes, err := client.DescribeDocuments(DescribeDocumentsRequest{KnowledgeBaseID: knowledgeBaseID})
+	if err != nil {
+		t.Logf("%s========== FAIL:  %s ==========%s", "\033[31m", t.Name(), "\033[0m")
+		t.Fatalf("describe documents failed: %v", err)
+	}
+
+	t.Logf("Documents retrieved: %+v", documentsRes)
 }

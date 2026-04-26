@@ -262,21 +262,27 @@ type DescribeDocumentsRequest struct {
 }
 
 type DescribeDocumentResponse struct {
-	ID            string               `json:"id"`
-	Name          string               `json:"name"`
-	CreatedAt     string               `json:"createdAt"`
-	DisplayStatus string               `json:"displayStatus"`
-	WordCount     int64                `json:"wordCount"`
-	Enabled       bool                 `json:"enabled"`
-	Meta          DescribeDocumentMeta `json:"meta"`
+	DocumentId        string               `json:"documentId"`
+	Name              string               `json:"name"`
+	CreatedAt         string               `json:"createdAt"`
+	Status            string               `json:"status"`
+	Meta              DescribeDocumentMeta `json:"meta"`
+	EnhanceTaskStatus EnhanceStatus        `json:"enhanceTaskStatus,omitempty"`
+	GraphTaskStatus   EnhanceStatus        `json:"graphTaskStatus,omitempty"`
+}
+
+type EnhanceStatus struct {
+	Status  string `json:"status"`
+	Message string `json:"message"`
 }
 
 type DescribeDocumentMeta struct {
-	Source   string `json:"source"`
-	FileID   string `json:"fileId"`
-	URL      string `json:"url"`
-	MimeType string `json:"mime_type"`
-	FileSize int64  `json:"file_size"`
+	Source    string           `json:"source"`
+	WordCount int64            `json:"wordCount"`
+	MimeType  string           `json:"mimeType"`
+	FileSize  int64            `json:"fileSize"`
+	URL       string           `json:"url"`
+	Tags      []map[string]any `json:"tags"`
 }
 
 type DescribeDocumentsResponse struct {
@@ -285,6 +291,7 @@ type DescribeDocumentsResponse struct {
 	IsTruncated bool                       `json:"isTruncated"`
 	NextMarker  string                     `json:"nextMarker"`
 	MaxKeys     int                        `json:"maxKeys"`
+	TotalCount  int                        `json:"totalCount"`
 	RequestID   string                     `json:"requestId"`
 }
 

@@ -6,6 +6,7 @@ public class DocumentsDescribeResponse {
     private boolean isTruncated;
     private String nextMarker;
     private Integer maxKeys;
+    private Integer totalCount;
 
     public DocumentDescribeResponse[] getData() {
         return data;
@@ -45,5 +46,11 @@ public class DocumentsDescribeResponse {
 
     public void setMaxKeys(Integer maxKeys) {
         this.maxKeys = maxKeys;
+    }
+    public Integer getTotalCount() {
+        return totalCount;
+    }
+    public void setTotalCount(Integer totalCount) {
+        this.totalCount = totalCount;
     }
 }

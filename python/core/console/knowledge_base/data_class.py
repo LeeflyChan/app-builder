@@ -111,19 +111,27 @@ class DescribeDocumentsRequest(BaseModel):
 
 
 class DescribeDocumentMeata(BaseModel):
-    source: Optional[str] = Field(None, description="文档来源")
-    fileId: Optional[str] = Field(None, description="文档对应的文件ID")
+    source: Optional[str] = Field(None, description="文档来源。upload_file：文本文档数据 datatable：表格型知识数据 url：网页数据")
+    wordCount: Optional[int] = Field(None, description="文档字数")
+    mimeType: Optional[str] = Field(None, description="文件类型，目前支持doc/txt/docx/pdf/ppt/pptx/xlsx/xls/csv/json这几种文件类型。如果是通过url方式导入的文档，该值为url")
+    fileSize: Optional[int] = Field(None, description="文件大小，单位bytes")
+    url:Optional[str] = Field(None, description="原文件下载链接")
+    tags: Optional[list[dict]] = Field(None, description="文档标签列表")
+
+class EnhanceStatus(BaseModel):
+    status: Optional[str] = Field(None, description="知识增强状态")
+    message: Optional[str] = Field(None, description="增强任务状态对应的提示信息")
 
 class DescribeDocument(BaseModel):
-    id: str = Field(..., description="文档ID")
+    documentId: str = Field(..., description="文档ID")
     name: str = Field(..., description="文档名称")
     createdAt: str = Field(..., description="文档创建时间")
-    wordCount: int = Field(..., description="文档字数")
-    enabled: bool = Field(True, description="文档是否可用")
-    displayStatus: str = Field(
+    status: str = Field(
         ...,
         description="文档状态。available：可用，queuing：排队中，notConfigured：数据待配置，parsing：解析中，indexing：处理中，parseError：解析失败，error：处理失败, retrainingSegmentUnusable：重建切片中，切片不可用, retrainErrSegmentUsable：重建切片错误，旧切片可用",
     )
+    enhanceTaskStatus:Optional[EnhanceStatus] =Field(None, description="知识增强状态")
+    graphTaskStatus:Optional[EnhanceStatus] =Field(None, description="知识增强状态")
     meta: Optional[DescribeDocumentMeata] = Field(..., description="文档元信息，包括source、fileId")
 
 
@@ -135,6 +143,7 @@ class DescribeDocumentsResponse(BaseModel):
     )
     nextMarker: str = Field(..., description="下一页起始位置")
     maxKeys: int = Field(..., description="本次查询包含的最大结果集数量")
+    totalCount: int = Field(..., description="总量")
     data: list[DescribeDocument] = Field(..., description="文档信息列表")
 
 
